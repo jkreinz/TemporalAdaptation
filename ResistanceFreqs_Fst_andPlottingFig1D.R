@@ -52,9 +52,7 @@ fst_bypair<-data.frame(ag_p=unlist(p1s),nat_p=unlist(p2s),ag_n=unlist(n1s), nat_
 (mean(fst_bypair$fst,na.rm = T)) #within pair mean Fst for EPSPS amplification
 
 
-##
 #now across envs, regardless of pair
-##
 
 commongarden$newcoding<-0
 commongarden$newcoding[commongarden$EPSPS_scaledcopy > 1.5 & commongarden$EPSPS_scaledcopy < 2.5] <- 1
@@ -89,6 +87,7 @@ library(car)
 library(dplyr)
 tsr_wmeta<-inner_join(tsr,meta, by="Sample")
 
+#check for sig differentiation across environments
 Anova(lm(data=tsr_wmeta, ALS653 ~ Env + Pair),type = 3)
 Anova(lm(data=tsr_wmeta, ALS574 ~ Env + Pair),type = 3)
 Anova(lm(data=tsr_wmeta, ALS197 ~ Env + Pair),type = 3)
@@ -96,8 +95,8 @@ Anova(lm(data=tsr_wmeta, ALS122 ~ Env + Pair),type = 3)
 Anova(lm(data=tsr_wmeta, ALS376 ~ Env + Pair),type = 3)
 Anova(lm(data=tsr_wmeta, EPSPS210 ~ Env + Pair),type = 3)
 Anova(lm(data=tsr_wmeta, PPOdel ~ Env + Pair),type = 3)
-Anova(lm(data=fst_long, value ~ variable + pair),type = 3)
 
+#get frequencies
 ag<-tsr_wmeta[tsr_wmeta$Env == "Ag",]
 nat<-tsr_wmeta[tsr_wmeta$Env == "Nat",]
 
@@ -105,7 +104,6 @@ coords<-read.table("contemp_coords.txt")
 names(coords)<-c("Sample","long","lat")
 tsr_wmeta<-inner_join(tsr_wmeta, coords, by="Sample")
 
-#get frequencies
 bypair<-tsr_wmeta %>% group_by(Pair, Env) %>% 
   group_by(Pair, Env, N = n(), add = TRUE) %>% 
   summarise(n = n(), ALS653=mean(ALS653)/2 , ALS197=mean(ALS197)/2, ALS122=mean(ALS122)/2, 
@@ -202,6 +200,7 @@ names(fst_bypair)[1:2]<-c("Ag","Nat")
 fst_bypair$pair<-seq(1:17)
 fst_long<-melt(fst_bypair[,c(1:2,6)],id.vars="pair")
 
+#check for sig diff at EPSPSamp
 Anova(lm(data=fst_long, value ~ variable + pair),type = 3)
 
 EPSPSamp<-ggplot(fst_long, aes(variable,value, group=pair)) +
@@ -211,19 +210,8 @@ EPSPSamp<-ggplot(fst_long, aes(variable,value, group=pair)) +
   ylim(0,1) +
   labs(y="Frequency of EPSPS amp.", x="Env")
 
-#figure 2D
+#finally, figure 2D
 grid.arrange(A653, A376, A574, EP210, EPSPSamp, PPO, ncol=6)
-
-
-
-#####
-#frequencies of TSR
-#####
-
-test<-bypair %>% group_by(Env) %>% 
-  dplyr:::summarise(n = n(), ALS653=mean(ALS653), ALS197=mean(ALS197), ALS122=mean(ALS122), 
-                    ALS376 = mean(ALS376), ALS574=mean(ALS574), EPSPS210=mean(EPSPS210), 
-                    PPOdel=mean(PPOdel))
 
 
 
