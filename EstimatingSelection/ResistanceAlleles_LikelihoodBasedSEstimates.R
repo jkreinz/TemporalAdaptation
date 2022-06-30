@@ -14,7 +14,7 @@ library(bbmle)
 #load lineage data with {date, Pango.lineage, n}
 mydata <-  read.csv("seven_herbicideresistant_loci_genotypes_throughtime.csv")
 names(mydata)[6]<-"time"
-mydata <- filter(mydata, mydata$variable == "ALS653")
+mydata <- filter(mydata, mydata$variable == "ALS653") #hard coded resistannce allele here. Do this entire script for unique values of mydata$variable
 
 #Set a starting date and a final date:
 #Note that the startdate shouldn't be too much before both alleles become common
