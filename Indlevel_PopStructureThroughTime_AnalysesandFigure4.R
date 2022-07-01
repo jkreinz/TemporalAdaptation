@@ -148,3 +148,127 @@ options(scipen=0)
 full<-lm(data=both_pop_less, K1 ~ long + lat + env + time_span + time_span:long + time_span:state + time_span:env:long )
 Anova(full,type=3, singular.ok = F) #model results
 
+
+
+#########
+#Fig S9
+########
+#structure plot
+
+inds<-as.data.frame(both_pop$sample)
+names(inds)<-"ind"
+if(length(unique(sapply(slist_final,nrow)))==1) slist_final <- lapply(slist_final,"rownames<-",inds$ind) #label individuals in your structure matrix for plotting
+
+group<-as.data.frame(both_pop[,c(7,5)])
+names(group)<-c("State","Long") 
+group$Long<-round(as.numeric(group$Long),digits = 2)
+
+#flip
+group$Long<-as.numeric(group$Long)*-1
+class(group$Long)
+
+library(wesanderson) #I use colours from the wes anderson package
+library(PNWColors)
+bay<-pnw_palette("Bay",6,type="continuous")
+
+library(pophelper)
+#plot sorted, west to east (I manually order pops this way)
+setwd("~/3waymerged_allsamps/")
+# collect aligned files. Default prefix is pop
+sfiles <- list.files(pattern = "*2.meanQ")
+slist <- sortQ(readQ(sfiles))
+slist_1 <- alignK(slist)
+slist_final<- mergeQ(slist_1)
+
+sfiles <- list.files(pattern = "*3.meanQ")
+slist <- sortQ(readQ(sfiles))
+slist_1 <- alignK(slist)
+slist_final[2] <- mergeQ(slist_1)
+
+sfiles <- list.files(pattern = "*4.meanQ")
+slist <- sortQ(readQ(sfiles))
+slist_1 <- alignK(slist)
+slist_final[3] <- mergeQ(slist_1)
+
+sfiles <- list.files(pattern = "*5.meanQ")
+slist <- sortQ(readQ(sfiles))
+slist_1 <- alignK(slist)
+slist_final[4] <- mergeQ(slist_1)
+
+slist_final<-as.qlist(slist_final)
+names(slist_final)<-c("K2","K3","K4","K5")
+group$State[group$State == "Nat"]<-"Ontario"
+group$State[group$State == "Walpole"]<-"Ontario"
+group$State[group$State == "Essex"]<-"Ontario"
+
+plotQ(as.qlist(slist_final[1]),imgoutput = "join",grplab=group, sppos = "left",
+      ordergrp=T,showlegend=F,useindlab=T,grplabsize = 1.75, grplabangle = 65,
+      showtitle=F,showsubtitle=F,divsize = .5,splabsize = 5,
+      height=2,width=30,indlabheight=0.4,indlabspacer=5, grplabpos = 1,
+      splab=c("K=2"),divgrp="State",selgrp = "Long", 
+      barbordercolour="white",barbordersize=0,outputfilename="faststruct_herbcontemp_longbystate_K2K3",imgtype="pdf",
+      clustercol = bay,  sharedindlab=F,showindlab=F)
+
+
+###########
+#Figure S13
+###########
+#joint PCA across DFs
+
+library(data.table)
+contemp_herb<-fread("~/3waymerged_allsamps_geno20p_maf05.eigenvec")
+
+head(contemp_herb)
+names(contemp_herb)[2]<-"sample"
+contemp_herb$sample<-as.character(contemp_herb$sample)
+anti_join(contemp_herb, all2, by="sample")
+
+all2$dataset<-"PNAS"
+all2$dataset[all2$year == 2019]<-"Paired"
+all2$dataset[all2$year < 2015]<-"Herbarium"
+
+contemp_herb_pca<-inner_join(contemp_herb, all2, by="sample")
+head(contemp_herb_pca)
+contemp_herb_pca$check<-NA
+contemp_herb_pca[contemp_herb_pca$sample=="HB0920"]$check<-1
+contemp_herb_pca[contemp_herb_pca$sample=="HB0921"]$check<-1
+bay<-pnw_palette("Bay",10,type="continuous")
+
+ggplot() +
+  geom_point(data=contemp_herb_pca[contemp_herb_pca$dataset == "PNAS",], aes(PC1, PC2,color=state), alpha=.8, size=2.5) +
+  scale_color_manual(values=c(bay[c(5:10)])) +
+  labs(color="Kreiner2019") +
+  new_scale_color() +
+  geom_point(data=contemp_herb_pca[contemp_herb_pca$dataset == "Paired",],aes(PC1, PC2,color=env), alpha=.8, size=2.5) +
+  scale_color_manual(values=c(bay[4],bay[1])) +
+  labs(colour="Contemporary \nPopulation Pairs") +
+  new_scale_color() +
+  geom_point(data=contemp_herb_pca[contemp_herb_pca$dataset == "Herbarium",],aes(PC1, PC2,color=year), alpha=.8, size=2.5) +
+  scale_color_continuous(low = "lightgrey", high="black") +
+  labs(colour="Herbarium \nSamples") +
+  theme_bw() +
+  xlab("PC1 (57%)") +
+  ylab("PC2 (10%)")
+
+
+###############
+#Figure S12
+###############
+
+contemp_herb<-fread("~/justherbtest_3waymerged_allsamps_geno20p_maf05.eigenvec")
+contemp_herb_pca<-inner_join(contemp_herb, all2, by="sample")
+head(contemp_herb_pca)
+contemp_herb_pca$check<-1
+contemp_herb_pca[contemp_herb_pca$sample=="HB0920"]$check<-0
+contemp_herb_pca[contemp_herb_pca$sample=="HB0921"]$check<-0
+bay<-pnw_palette("Bay",10,type="continuous")
+
+contemp_herb_pca %>% filter(dataset == "Herbarium") %>% filter(check == 1) %>%
+ggplot() +
+  geom_point(aes(-PC1, PC2,color=state), alpha=.8, size=2.5) +
+  #scale_color_manual(values=c(bay[c(4:10)])) +
+  labs(colour="Herbarium \nSamples") +
+  theme_bw() +
+  xlab("PC1 (11.32%)") +
+  ylab("PC2 (3.061%)")
+
