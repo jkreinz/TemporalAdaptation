@@ -1,4 +1,3 @@
-
 cmh<-fread("~/ag_v_nat_withinpairs_maf01.cmh")
 cmh$fdr <- p.adjust(cmh$P,method="fdr")
 cmh$bon <- p.adjust(cmh$P,method="bonferroni")
@@ -168,6 +167,4 @@ table(cmh_pairedfst$fst_toptop, cmh_pairedfst$fdr)
 #what is the correlation of CMH and Fst for all sites across the genome?
 cor(-log10(cmh_pairedfst$P), cmh_pairedfst$fst, method = "spearman", use = "complete.obs")
 cor(cmh_pairedfst$CHISQ, cmh_pairedfst$fst, method = "pearson", use = "complete.obs")
-
-
 
