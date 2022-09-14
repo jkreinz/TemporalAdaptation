@@ -1,0 +1,160 @@
+// set up a simple neutral simulation
+initialize() {
+
+        initializeSLiMOptions(dimensionality="xy");
+        //2d space model
+
+        initializeMutationRate(5e-6);
+
+        // m1 mutation type: neutral (rate, dominance, dfe = f, 0 = fixed selection coefficient)
+        initializeMutationType("m1", 0.5, "f", 0.0);
+
+        // m2 mutation type: beneficial - exponential distrubtion centred on 0.05
+        initializeMutationType("m2", 0.5, "e", 0.1); // beneficial
+        m2.convertToSubstitution = F;
+        initializeGenomicElementType("g1", c(m1,m2), c(1.0,0.01));
+
+        // uniform chromosome of length 100 kb with uniform recombination
+        initializeGenomicElement(g1, 0, 99999);
+        initializeRecombinationRate(0.000023); //scaled to 4x10^6 (arab) x 70000
+}
+
+// create a population of 1000 individuals
+1 late() {
+        sim.addSubpop("p1", 10000);
+
+// initial positions are random in ([0,1], [0,1])
+        p1.individuals.x = runif(p1.individualCount);
+        p1.individuals.y = runif(p1.individualCount);
+        }
+
+//generate spatial position for the offspring individual
+modifyChild() {
+// draw a child position near the first parent, within bounds
+do child.x = parent1.x + rnorm(1, 0, 0.02);
+while ((child.x < 0.0) | (child.x > 1.0));
+
+do child.y = parent1.y + rnorm(1, 0, 0.02);
+while ((child.y < 0.0) | (child.y > 1.0));
+
+return T;
+}
+
+1:2000 fitness(m2) { return 1.0; }
+
+2000:2141 fitness(m2) {
+        if (homozygous)
+                return 1.0 + mut.selectionCoeff;
+        else
+                return (1.0 + mut.selectionCoeff)^0.5;
+}
+
+2000  late() { p1.outputVCFSample(1, filePath="gt000_sample.vcf"); }
+2005  late() { p1.outputVCFSample(1, filePath="t005_sample.vcf"); }
+2006  late() { p1.outputVCFSample(1, filePath="t006_sample.vcf"); }
+2007  late() { p1.outputVCFSample(1, filePath="t007_sample.vcf"); }
+2010  late() { p1.outputVCFSample(1, filePath="t010_sample.vcf"); }
+2010  late() { p1.outputVCFSample(1, filePath="t010_2_sample.vcf"); }
+2010  late() { p1.outputVCFSample(1, filePath="t010_3_sample.vcf"); }
+2012  late() { p1.outputVCFSample(1, filePath="t012_sample.vcf"); }
+2013  late() { p1.outputVCFSample(1, filePath="t013_sample.vcf"); }
+2019  late() { p1.outputVCFSample(1, filePath="t019_sample.vcf"); }
+2019  late() { p1.outputVCFSample(1, filePath="t019_2_sample.vcf"); }
+2021  late() { p1.outputVCFSample(1, filePath="t021_sample.vcf"); }
+2021  late() { p1.outputVCFSample(1, filePath="t021_2_sample.vcf"); }
+2022  late() { p1.outputVCFSample(1, filePath="t022_sample.vcf"); }
+2022  late() { p1.outputVCFSample(1, filePath="t022_2_sample.vcf"); }
+2023  late() { p1.outputVCFSample(1, filePath="t023_sample.vcf"); }
+2024  late() { p1.outputVCFSample(1, filePath="t024_sample.vcf"); }
+2025  late() { p1.outputVCFSample(1, filePath="t025_sample.vcf"); }
+2027  late() { p1.outputVCFSample(1, filePath="t027_sample.vcf"); }
+2027  late() { p1.outputVCFSample(1, filePath="t027_2_sample.vcf"); }
+2027  late() { p1.outputVCFSample(1, filePath="t027_3_sample.vcf"); }
+2027  late() { p1.outputVCFSample(1, filePath="t027_4_sample.vcf"); }
+2027  late() { p1.outputVCFSample(1, filePath="t027_5_sample.vcf"); }
+2028  late() { p1.outputVCFSample(1, filePath="t028_sample.vcf"); }
+2032  late() { p1.outputVCFSample(1, filePath="t032_sample.vcf"); }
+2033  late() { p1.outputVCFSample(1, filePath="t033_sample.vcf"); }
+2033  late() { p1.outputVCFSample(1, filePath="t033_2_sample.vcf"); }
+2036  late() { p1.outputVCFSample(1, filePath="t036_sample.vcf"); }
+2039  late() { p1.outputVCFSample(1, filePath="t039_sample.vcf"); }
+2042  late() { p1.outputVCFSample(1, filePath="t042_sample.vcf"); }
+2043  late() { p1.outputVCFSample(1, filePath="t043_sample.vcf"); }
+2043  late() { p1.outputVCFSample(1, filePath="t043_2_sample.vcf"); }
+2048  late() { p1.outputVCFSample(1, filePath="t048_sample.vcf"); }
+2049  late() { p1.outputVCFSample(1, filePath="t049_sample.vcf"); }
+2049  late() { p1.outputVCFSample(1, filePath="t049_2_sample.vcf"); }
+2051  late() { p1.outputVCFSample(1, filePath="t051_sample.vcf"); }
+2055  late() { p1.outputVCFSample(1, filePath="t055_sample.vcf"); }
+2057  late() { p1.outputVCFSample(1, filePath="t057_sample.vcf"); }
+2057  late() { p1.outputVCFSample(1, filePath="t057_2_sample.vcf"); }
+2060  late() { p1.outputVCFSample(1, filePath="t060_sample.vcf"); }
+2062  late() { p1.outputVCFSample(1, filePath="t062_sample.vcf"); }
+2063  late() { p1.outputVCFSample(1, filePath="t063_sample.vcf"); }
+2064  late() { p1.outputVCFSample(1, filePath="t064_sample.vcf"); }
+2067  late() { p1.outputVCFSample(1, filePath="t067_sample.vcf"); }
+2068  late() { p1.outputVCFSample(1, filePath="t068_sample.vcf"); }
+2069  late() { p1.outputVCFSample(1, filePath="t069_sample.vcf"); }
+2070  late() { p1.outputVCFSample(1, filePath="t070_sample.vcf"); }
+2070  late() { p1.outputVCFSample(1, filePath="t070_2_sample.vcf"); }
+2070  late() { p1.outputVCFSample(1, filePath="t070_3_sample.vcf"); }
+2071  late() { p1.outputVCFSample(1, filePath="t071_sample.vcf"); }
+2071  late() { p1.outputVCFSample(1, filePath="t071_2_sample.vcf"); }
+2076  late() { p1.outputVCFSample(1, filePath="t076_sample.vcf"); }
+2076  late() { p1.outputVCFSample(1, filePath="t076_2_sample.vcf"); }
+2077  late() { p1.outputVCFSample(1, filePath="t077_sample.vcf"); }
+2078  late() { p1.outputVCFSample(1, filePath="t078_sample.vcf"); }
+2079  late() { p1.outputVCFSample(1, filePath="t079_sample.vcf"); }
+2079  late() { p1.outputVCFSample(1, filePath="t079_2_sample.vcf"); }
+2079  late() { p1.outputVCFSample(1, filePath="t079_3_sample.vcf"); }
+2080  late() { p1.outputVCFSample(1, filePath="t080_sample.vcf"); }
+2081  late() { p1.outputVCFSample(1, filePath="t081_sample.vcf"); }
+2082  late() { p1.outputVCFSample(1, filePath="t082_sample.vcf"); }
+2082  late() { p1.outputVCFSample(1, filePath="t082_2_sample.vcf"); }
+2084  late() { p1.outputVCFSample(1, filePath="t084_sample.vcf"); }
+2085  late() { p1.outputVCFSample(1, filePath="t085_sample.vcf"); }
+2085  late() { p1.outputVCFSample(1, filePath="t085_2_sample.vcf"); }
+2086  late() { p1.outputVCFSample(1, filePath="t086_sample.vcf"); }
+2088  late() { p1.outputVCFSample(1, filePath="t088_sample.vcf"); }
+2090  late() { p1.outputVCFSample(1, filePath="t090_sample.vcf"); }
+2090  late() { p1.outputVCFSample(1, filePath="t090_2_sample.vcf"); }
+2090  late() { p1.outputVCFSample(1, filePath="t090_3_sample.vcf"); }
+2090  late() { p1.outputVCFSample(1, filePath="t090_4_sample.vcf"); }
+2091  late() { p1.outputVCFSample(1, filePath="t091_sample.vcf"); }
+2091  late() { p1.outputVCFSample(1, filePath="t091_2_sample.vcf"); }
+2092  late() { p1.outputVCFSample(1, filePath="t092_sample.vcf"); }
+2094  late() { p1.outputVCFSample(1, filePath="t094_sample.vcf"); }
+2096  late() { p1.outputVCFSample(1, filePath="t096_sample.vcf"); }
+2097  late() { p1.outputVCFSample(1, filePath="t097_sample.vcf"); }
+2100  late() { p1.outputVCFSample(1, filePath="t100_sample.vcf"); }
+2103  late() { p1.outputVCFSample(1, filePath="t103_sample.vcf"); }
+2111  late() { p1.outputVCFSample(1, filePath="t111_sample.vcf"); }
+2115  late() { p1.outputVCFSample(1, filePath="t115_sample.vcf"); }
+2116  late() { p1.outputVCFSample(1, filePath="t116_sample.vcf"); }
+2116  late() { p1.outputVCFSample(1, filePath="t116_2_sample.vcf"); }
+2118  late() { p1.outputVCFSample(1, filePath="t118_sample.vcf"); }
+2118  late() { p1.outputVCFSample(1, filePath="t118_2_sample.vcf"); }
+2118  late() { p1.outputVCFSample(1, filePath="t118_3_sample.vcf"); }
+2119  late() { p1.outputVCFSample(1, filePath="t119_sample.vcf"); }
+2120  late() { p1.outputVCFSample(1, filePath="t120_sample.vcf"); }
+2121  late() { p1.outputVCFSample(1, filePath="t121_sample.vcf"); }
+2121  late() { p1.outputVCFSample(1, filePath="t121_2_sample.vcf"); }
+2123  late() { p1.outputVCFSample(1, filePath="t123_sample.vcf"); }
+2124  late() { p1.outputVCFSample(1, filePath="t124_sample.vcf"); }
+2125  late() { p1.outputVCFSample(1, filePath="t125_sample.vcf"); }
+2127  late() { p1.outputVCFSample(1, filePath="t127_sample.vcf"); }
+2128  late() { p1.outputVCFSample(1, filePath="t128_sample.vcf"); }
+2130  late() { p1.outputVCFSample(1, filePath="t130_sample.vcf"); }
+2131  late() { p1.outputVCFSample(1, filePath="t131_sample.vcf"); }
+2135  late() { p1.outputVCFSample(1, filePath="t135_sample.vcf"); }
+2135  late() { p1.outputVCFSample(1, filePath="t135_sample.vcf"); }
+2137  late() { p1.outputVCFSample(1, filePath="t137_sample.vcf"); }
+2139  late() { p1.outputVCFSample(1, filePath="t139_sample.vcf"); }
+2139  late() { p1.outputVCFSample(1, filePath="t139_2_sample.vcf"); }
+2140  late() { p1.outputVCFSample(1, filePath="t140_sample.vcf"); }
+2141  late() { p1.outputVCFSample(1, filePath="t141_sample.vcf"); }
+
+// output samples of 10 genomes periodically, all fixed mutations at end
+//1000 late() { p1.outputSample(10); }
+//2000 late() { p1.outputSample(10); }
+//2000 late() { sim.outputFixedMutations(); }
