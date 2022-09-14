@@ -1,4 +1,4 @@
-#go from haps (shapeit phased output, from Kreiner 2021) to vcf
+#go from haps (shapeit phased output, from Kreiner 2019) to vcf
 for i in {1..16}
 do
 paste -d" " <(awk '{print $1":"$3"_"$4"_"$5}' ../Scaffold_${i}_commongarden_phased_flipped.haps) <(cut -d" " -f2- ../Scaffold_${i}_commongarden_phased_flipped.haps) > Scaffold_${i}.hap
@@ -7,7 +7,7 @@ cp ../Scaffold_${i}_commongarden_phased.vcf.sample ./Scaffold_${i}.samples
 /ohta1/julia.kreiner/software/bcftools/bcftools convert --hapsample2vcf Scaffold_${i} > Scaffold_${i}.vcf
 done
 
-#format recombination map (ldhat output, from Kreiner 2021)
+#format recombination map (ldhat output, from Kreiner 2019)
 for i in {1..16}; do grep -v "#" Scaffold_${i}.vcf | awk '{print $1 "\t" $2}' > Scaffold_${i}.sites; done
 for i in {1..16}
 do 
