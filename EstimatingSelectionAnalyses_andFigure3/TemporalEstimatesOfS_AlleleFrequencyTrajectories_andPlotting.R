@@ -1,16 +1,15 @@
 #import genotypes for focal alleles in herbarium samples
 library(data.table)
 herb_012<-fread("~/herb_cmh_FDR10p_clumped_matched_refalt_flipped_final.012",na.strings = "-1")
-#herb_012<-herb_012[,-1]
 names(herb_012)<-paste("snp",seq(1:154),sep = "_")
-herb_012<-herb_012/2
+herb_012<-herb_012/2 #rescale genotypes to allele frequencies i.e. 0,1,2, to 0,0.5,1
 inds<-fread("~/herb_cmh_FDR10p_clumped_matched_refalt_matched.012.indv",header = F)
 herb_012$sample<-gsub("HBO","HB0",inds$V1)
 
 #import genotypes for focal alleles in contemporary samples
 contemp_012<-fread("~/CMH_clumped_outliers_cg_flipped_final.012", na.strings = "-1")
 names(contemp_012)<-paste("snp",seq(1:154),sep = "_")
-contemp_012<-contemp_012/2
+contemp_012<-contemp_012/2 #rescale genotypes to allele frequencies i.e. 0,1,2, to 0,0.5,1
 inds<-fread("~/CMH_clumped_outliers_cg_toflip.012.indv",header = F)
 contemp_012$sample<-as.character(inds$V1)
 
@@ -29,7 +28,6 @@ herb_contemp_meta<-rbind(herb_metadata_012,contemp_metadata_012)
 #convert from wide to long format
 long_012<-melt(herb_contemp_meta,id.vars=c("sample","env","sex","lat","long","year","state"))
 long_012 <- long_012 %>% filter(env != "")
-#long_012<-melt(herb_metadata_012,id.vars=c("sample","env","sex","lat","long","year","state"))
 
 #how many samples do we have predating the year 1870?
 nrow(herb_metadata_012[herb_metadata_012$year < 1870,])
@@ -39,8 +37,8 @@ nrow(herb_metadata_012[herb_metadata_012$year < 1870,])
 #########
 
 #here ag includes dist (since !=Nat)
-ag<-herb_contemp_meta %>% filter(env!="") %>% filter(env!="Nat") #%>% filter(year<1960)#note herb_metadata_012 vs herb_contemp_meta
-nat<-herb_contemp_meta %>% filter(env!="") %>% filter(env=="Nat")# %>% filter(year<1960)
+ag<-herb_contemp_meta %>% filter(env!="") %>% filter(env!="Nat") %>% filter(year>1969)#note herb_metadata_012 vs herb_contemp_meta
+nat<-herb_contemp_meta %>% filter(env!="") %>% filter(env=="Nat") %>% filter(year>1969)
 
 #count of historical samples
 nrow(nat %>% filter(year < 2018))
@@ -59,7 +57,7 @@ for (i in 1:154) {
   test<-ag[,..i] #allele number i (since matrix of genos)
   test$year<-ag$year
   
-  lm1<-glm(data=test, unlist(test[,1]) ~ year, family="binomial") #regress genotypes on year
+  lm1<-glm(data=test, unlist(test[,1]) ~ year, family="binomial") #regress genotypes on year to get predicted allele frequency and estimate of selection
   test<-as.data.frame(summary(lm1)$coefficients)
   
   pval[[i]]<-test$`Pr(>|z|)`[2]
@@ -76,6 +74,8 @@ for (i in 1:154) {
 #agricultural results
 results_ag<-data.frame(pval=unlist(pval),zval=unlist(zval),slope=unlist(slope),slope_error=unlist(slope_error),afmin=unlist(afmin),afmax=unlist(afmax))
 results_ag$variable<-paste("snp",seq(1:154),sep = "_")
+
+#some summaries
 mean(results_ag$afmax) #AF at 2018
 mean(results_ag$afmax-results_ag$afmin) #AF change
 min(results_ag[results_ag$slope < 1 & results_ag$slope > -1,]$slope)*2 #min selection
@@ -140,14 +140,12 @@ new_timespan <- data.frame(year = c(1960, 1960, 2018, 2018), env=c("Ag","Nat","A
 
 #selection over the full timespan (1870-2018) in agricultural environments
 fulltime_ag<-glm(data=long_ag, value ~ year + variable, family="binomial")
-#Anova(bothenv_pre_ag,type=3)
-s<-summary(fulltime_ag) ##this needs to be updated in revised manuscript##!!!!!!!
+s<-summary(fulltime_ag) 
 s$coefficients[[2]] * 2 #since diploid selection
 
 #selection over the full timespan (1870-2018) in natural environments
 fulltime_nat<-glm(data=long_nat, value ~ year + variable, family="binomial")
-#Anova(bothenv_pre_ag,type=3)
-s<-summary(fulltime_nat) ##this needs to be updated in revised manuscript##!!!!!!!
+s<-summary(fulltime_nat)
 s$coefficients[[2]] * 2 #since diploid selection
 
 
@@ -155,13 +153,13 @@ s$coefficients[[2]] * 2 #since diploid selection
 
 #1870-1960 in agricultural environments
 bothenv_pre_ag<-glm(data=long_012_both_pregreen_ag, value ~ year + variable, family="binomial")
-s<-summary(bothenv_pre_ag) ##this needs to be updated in revised manuscript##!!!!!!!
+s<-summary(bothenv_pre_ag) 
 s$coefficients[[2]] * 2 #since diploid selection
 
 #1870-1960 in natural environments
 bothenv_pre_nat<-glm(data=long_012_both_pregreen_nat, value ~ year + variable, family="binomial")
 #Anova(bothenv_pre_ag,type=3)
-s<-summary(bothenv_pre_nat) ##this needs to be updated in revised manuscript##!!!!!!!
+s<-summary(bothenv_pre_nat) 
 s$coefficients[[2]] * 2 #since diploid selection
 
 
@@ -271,7 +269,6 @@ env_means<-rbind(ag_means,nat_means)
 
 library(segmented)
 long_012_both_com<-long_012_both[complete.cases(long_012_both),]
-#long_012_both_com <- long_012_both_com[long_012_both_com$env != "Dist",]
 out.lm <- glm(value ~ year * env, family="binomial", data = long_012_both_com)
 summary(out.lm)
 
@@ -287,7 +284,7 @@ summary(my.seg.k2)
 
 AIC(my.seg.k1,my.seg.k2,out.lm)
 # get the breakpoints
-my.seg.k2$psi #bets model is one with two breakpoints, the second falling in 1961
+my.seg.k2$psi #best model is one with two breakpoints, the second falling in 1961
 
 
 
