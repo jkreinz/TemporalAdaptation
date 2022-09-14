@@ -1,3 +1,5 @@
+#Import Data
+##Herbarium Data
 library(data.table)
 herb_012<-fread("~/herb_resSNPs_sort.012",na.strings = "-1")
 herb_012<-herb_012[,-1]
@@ -8,7 +10,7 @@ inds<-fread("~/herb_resSNPs_sort.012.indv",header = F)
 herb_012$sample<-gsub("HBO","HB0",inds$V1)
 
 
-
+##Contemporary Data
 contemp_012<-fread("~/contemporary_resSNPs_sort.012", na.strings = "-1")
 contemp_012<-contemp_012[,-1]
 names(contemp_012)<-c("PPO210","ALS653","ALS574","ALS376","ALS197","ALS122","EPSPS210")
@@ -16,18 +18,20 @@ contemp_012<-contemp_012/2
 inds<-fread("~/contemporary_resSNPs_sort.012.indv",header = F)
 contemp_012$sample<-as.character(inds$V1)
 
-
+#Metadata
 info<-read.table("~/3waymerged_sampleinfo.txt",sep="\t",header = T)
 head(info)
 
 
 ######
 
+#Merge
 herb_metadata_012<-inner_join(herb_012,info,by="sample")
 contemp_metadata_012<-inner_join(contemp_012,info,by="sample")
 head(contemp_metadata_012)
 contemp_metadata_012$year<-2018
 
+#Correct the 3 resistance genotype calls with poor support (low allelic bias)
 herb_metadata_012$ALS574[which(herb_metadata_012$ALS574 == 0.5)] <- 0
 herb_metadata_012$ALS574[which(herb_metadata_012$ALS574 == 0.5)]
 
@@ -36,14 +40,13 @@ herb_metadata_012$ALS122[which(herb_metadata_012$ALS122 == 0.5 & herb_metadata_0
 
 herb_contemp_meta<-rbind(herb_metadata_012,contemp_metadata_012)
 
+#Convert to long format for analyses and plotting
 long_012<-melt(herb_contemp_meta,id.vars=c("sample","env","sex","lat","long","year","state"))
-long_012 <- long_012 %>% filter(env != "")
-#long_012<-melt(herb_metadata_012,id.vars=c("sample","env","sex","lat","long","year","state"))
+long_012 <- long_012 %>% filter(env != "") #remove samples with no env info
 
-nrow(herb_metadata_012[herb_metadata_012$year < 1870,])
+nrow(herb_metadata_012[herb_metadata_012$year < 1870,]) #remove samples prior to 1870 for this analysis
 
-
-
+#Initalize variables to track, representing outputs from each logistic regression
 pval<-list()
 zval<-list()
 slope<-list()
@@ -52,8 +55,9 @@ afmin<-list()
 afmax<-list()
 se<-list()
 ########
-newdata <- data.frame(year = c(1960, 2018))
+newdata <- data.frame(year = c(1960, 2018)) #intialize years we want predicted values for
 
+#run logistic approach for estimating selection on each individual allele
 for (i in 1:7) {
   test<-herb_contemp_meta[,..i]
   test$year<-herb_contemp_meta$year
@@ -74,10 +78,12 @@ for (i in 1:7) {
   
 }
 
+#merge results into a dataframe
 results<-data.frame(pval=unlist(pval),zval=unlist(zval),slope=unlist(slope),se=unlist(se),inter=unlist(intcp),afmin=unlist(afmin),afmax=unlist(afmax))
 row.names(results)<-c("PPO210","ALS653","ALS574","ALS376","ALS197","ALS122","EPSPS210")
-write.table(results,"individualmods_sel_resistancealleles.txt",sep="\t",col.names = T,row.names = T,quote=F)
 
+
+#some summaries
 hist(results$afmax-results$afmin)
 mean(results$afmax-results$afmin)
 median(results$afmax-results$afmin)
@@ -91,18 +97,45 @@ median(neg$afmax-neg$afmin)
 head(long_012)
 tail(long_012)
 
+
 results$variable<-c("PPO210","ALS653","ALS574","ALS376","ALS197","ALS122","EPSPS210")
 long_012_merged<-inner_join(long_012,results,by="variable")
-#write.table(long_012,"seven_herbicideresistant_loci_genotypes_throughtime.csv",sep=",",col.names = T,row.names = F)
 long_012_merged$pos<-long_012_merged$slope>0
 #install.packages("MetBrewer")
 library(MetBrewer)
 library(ggplot2)
 
+#joint estimates of selection by environment type
+avg_resistance<-glm(data=long_012[long_012$year > 1960 & long_012$env != "Dist",], value ~ year * env + variable, family="binomial")
+s<-summary(avg_resistance)
+s$coefficients[[2]] * 2 #estimate of diploid selection across environments since 1960
+s$coefficients[[2,4]] #p-value
 
+avg_ag_resistance<-glm(data=long_012[long_012$year > 1960 & long_012$env == "Ag",], value ~ year + variable, family="binomial")
+summary(avg_ag_resistance)
+s<-summary(avg_ag_resistance)
+s$coefficients[[2]] * 2 #estimate of diploid selection in ag since 1960
+s$coefficients[[2,4]] #p-value
+
+nat_long<-long_012[long_012$year > 1960 & long_012$env == "Nat",]
+avg_nat_resistance<-glm(data=nat_long, value ~ year + variable, family="binomial")
+summary(avg_nat_resistance)
+s<-summary(avg_nat_resistance)
+s$coefficients[[2]] * 2 #estimate of diploid selection in nat since 1960
+s$coefficients[[2,4]] #p-value
+
+dist_long<-long_012[long_012$year > 1960 & long_012$env == "Dist",]
+avg_dist_resistance<-glm(data=dist_long, value ~ year + variable, family="binomial")
+summary(avg_dist_resistance)
+s<-summary(avg_dist_resistance)
+s$coefficients[[2]] * 2 #estimate of diploid selection in dist since 1960
+s$coefficients[[2,4]] #p-value
+
+
+###########
+#Figure 3D
+###########
 anth<-read.csv("~/Downloads/total-agricultural-land-use-per-person.csv")
-#effic<-read.csv("~/Downloads/total-agricultura")
-
 head(anth)
 
 library(dplyr)
@@ -149,8 +182,7 @@ herb_s<-ggplot(data=long_012_merged,aes(year,value,group=variable,color=variable
 
 library(patchwork)
 
-##########
-#figure 3D
+
 dens1 + plot_spacer() + herb_s +
   plot_layout(
     ncol = 2, 
@@ -171,30 +203,7 @@ ggplot(data=long_012_merged,aes(year,value,group=variable,color=variable)) +
   coord_cartesian(xlim=c(2000,2020)) 
 
 
-avg_resistance<-glm(data=long_012[long_012$year > 1960 & long_012$env != "Dist",], value ~ year * env + variable, family="binomial")
-s<-summary(avg_resistance)
-s$coefficients[[2]] * 2 #estimate of selection across environments since 1960
-s$coefficients[[2,4]] #p-value
 
-avg_ag_resistance<-glm(data=long_012[long_012$year > 1960 & long_012$env == "Ag",], value ~ year + variable, family="binomial")
-summary(avg_ag_resistance)
-s<-summary(avg_ag_resistance)
-s$coefficients[[2]] * 2 #estimate of selection in ag since 1960
-s$coefficients[[2,4]] #p-value
-
-nat_long<-long_012[long_012$year > 1960 & long_012$env == "Nat",]
-avg_nat_resistance<-glm(data=nat_long, value ~ year + variable, family="binomial")
-summary(avg_nat_resistance)
-s<-summary(avg_nat_resistance)
-s$coefficients[[2]] * 2 #estimate of selection in nat since 1960
-s$coefficients[[2,4]] #p-value
-
-dist_long<-long_012[long_012$year > 1960 & long_012$env == "Dist",]
-avg_dist_resistance<-glm(data=dist_long, value ~ year + variable, family="binomial")
-summary(avg_dist_resistance)
-s<-summary(avg_dist_resistance)
-s$coefficients[[2]] * 2 #estimate of selection in dist since 1960
-s$coefficients[[2,4]] #p-value
 
 ################
 #Figure S2
