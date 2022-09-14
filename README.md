@@ -9,4 +9,4 @@ Scripts for analyzying temporal sequence data & signals of contemporary evolutio
 5) [Plotting samples on a map with multiple legends](MapPlotting_Figure1.R)
 6) [Alignmnent and SNPcalling commands](https://github.com/jkreinz/TemporalAdaptation/tree/main/Alignment_SNPcalling)
 7) [Running SLIMulations of selection estimation given spatio-temporal sampling](https://github.com/jkreinz/TemporalAdaptation/tree/main/SLIMulations)
-
+8) [Inferring patterns of Allelic Bias, Coverage, and Fragment Size](https://github.com/jkreinz/TemporalAdaptation/tree/main/AB_plotting)
