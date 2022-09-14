@@ -23,3 +23,5 @@ BEGIN {OFS = "\t"}
                                 }
         printf "\n"
 }
+
+while read files; do samtools depth ${files}.final.sorted_rmdup.rescaled.sorted.bam |  awk '{sum+=$3} END { print "Average = ",sum/NR}' > ${files}.cov; done < listoffiles
