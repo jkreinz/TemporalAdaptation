@@ -23,7 +23,7 @@ HOSTS=$(scontrol show hostnames $SLURM_NODELIST | tr '\n' ,)
 
 
 # iterate over regions using gnu parallel to dispatch jobs
-cat /home/w/wrighste/kreinerj/amaranth/100kbregions | parallel --env OMP_NUM_THREADS,PATH,LD_LIBRARY_PATH --joblog slurm-$SLURM_JOBID.log -k -j $SLURM_NTASKS_PER_NODE -S $HOSTS --wd $PWD "freebayes -f /home/w/wrighste/kreinerj/amaranth/AMATA_finishedtohypo_renamedfinal.fasta --use-best-n-alleles 4 /scratch/w/wrighste/kreinerj/bams/*dd.bam > /scratch/w/wrighste/kreinerj/region_vcfs/{}.vcf " --region {}
+cat /home/w/wrighste/kreinerj/amaranth/100kbregions | parallel --env OMP_NUM_THREADS,PATH,LD_LIBRARY_PATH --joblog slurm-$SLURM_JOBID.log -k -j $SLURM_NTASKS_PER_NODE -S $HOSTS --wd $PWD "freebayes -f /home/w/wrighste/kreinerj/amaranth/AMATA_finishedtohypo_renamedfinal.fasta --use-best-n-alleles 4 --report-monomorphic /scratch/w/wrighste/kreinerj/bams/*dd.bam > /scratch/w/wrighste/kreinerj/region_vcfs/{}.vcf " --region {}
 
 
 #cat /home/w/wrighste/kreinerj/amaranth/listofregions.bed | parallel --verbose -j 8 "java -jar gatk \
