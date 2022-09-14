@@ -3,6 +3,7 @@
 #	bwa: https://github.com/lh3/bwa
 #	samtools: https://www.htslib.org/download/
 #	picard: https://github.com/broadinstitute/picard/releases/
+# MapDamage2: https://ginolhac.github.io/mapDamage/
  #
 # USAGE:
 # bash script.sh <reference_genome.fasta> <n_threads>
@@ -33,14 +34,14 @@ cat ${prefx}*_2.fq.gz > ${prefx}.R2.fastq.gz
 $fastp --in1 ${prefx}.R1.fastq.gz --in2 ${prefx}.R2.fastq.gz --out1 ${prefx}.R1.unmerged.fastq.gz --out2 ${prefx}.R2.unmerged.fastq.gz  --merge --merged_out ${prefx}.collapsed.gz
 
 # 2. Map merged (collapsed) reads to Reference Genome and calculate Endougenous DNA
-bwa mem -t $threads -R "@RG\tID:$prefx\tSM:$prefx" $reference ${pathtobams}/${prefx}_R1.fastq.gz ${pathtobams}/${prefx}_R2.fastq.gz | samtools view -@ $threads -Sbh - > /ohta/julia.kreiner/waterhemp/commongarden/bams/secondhalf/${prefx}.uns.bam
+bwa mem -t $threads -R "@RG\tID:$prefx\tSM:$prefx" $reference ${pathtobams}/${prefx}_R1.fastq.gz ${pathtobams}/${prefx}_R2.fastq.gz | samtools view -@ $threads -Sbh - >  /ohta/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.uns.bam
 
 #cd $path/bams
 
 total=$(samtools view -@ $threads -c $prefx.full.uns.bam)
 echo -e "TotalReads\n$total" >> $prefx.log
 
-sambamba sort -m 15GB --tmpdir $path/bams/tmp -t $threads -o /ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/$prefx.sorted.bam /ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.uns.bam
+sambamba sort -m 15GB --tmpdir $path/bams/tmp -t $threads -o /ohta/julia.kreiner/waterhemp/herbarium/femaleref/$prefx.sorted.scaled.bam /ohta/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.scaled.bam
 samtools merge ${prefx}.final.sorted.bam ${prefx}.unmerg.sorted.bam ${prefx}.merged.sorted.bam
 rm ${prefx}.uns.bam
 mapped=$(samtools view -@ $threads -c $prefx.bam)
@@ -48,15 +49,13 @@ echo -e "MappedReads\n$mapped" >> ${prefx}.log
 echo "EndogenousDNA" >> ${prefx}.log
 python -c "print(float($mapped)/ $total)" >> ${prefx}.log
 
+# 2b. MapDamage to calculate deamination levels per sample, across the reads, and rescale per-base quality
+mapDamage -i ${prefx}.final.sorted.bam -r myreference.fasta --rescale
 
-#3. Mark duplicates
-java -Xmx5G -Djava.io.tmpdir=~/tmp -jar $picard MarkDuplicates I=/ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.sorted.fixed.bam O=/ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.dd.bam M=/ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.dedup.log AS=true # Change here java memory usage with the options -Xmx. Here, I am assuming 10G of free memory
 
-cat listoffiles | parallel -j 5 "java -Xmx5G -Djava.io.tmpdir=./ -jar $picard MarkDuplicates I=/ohta/julia.kreiner/waterhemp/commongarden/bams/secondhalf/{}.sorted.bam O=commongarden/bams/secondhalf/{}.dd.bam M=/ohta/julia.kreiner/waterhemp/commongarden/bams/secondhalf/{}.dedup.log AS=true"
+#3. Mark duplicates with DeDup - optimized for merged pair-end reads (aDNA)
 
-#TRY THIS PRGRAM - optimized for merged pair-end reads (aDNA)
-
-cat listoffiles | parallel -j 10 "mkdir {}; java -jar ~/software/DeDup/DeDup-0.12.6.jar -i {}.final.sorted.bam -m -o {}"
+mkdir {}; java -jar ~/software/DeDup/DeDup-0.12.6.jar -i /ohta2/julia.kreiner/herbarium/femaleref/bams/{prefx}_rescaled/{}.final.sorted.bam -m -o {}"
 
 
 
