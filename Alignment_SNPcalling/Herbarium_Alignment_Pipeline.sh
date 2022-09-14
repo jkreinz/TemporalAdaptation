@@ -17,7 +17,7 @@ fastp=/ohta/julia.kreiner/software/fastp
 picard=/ohta/julia.kreiner/software/picard.jar
 #path=/ohta/julia.kreiner/waterhemp/herbarium
 prefx=$3
-pathtobams=/ohta/julia.kreiner/waterhemp/commongarden/fastqs
+pathtobams=/ohta2/julia.kreiner/waterhemp/herbarium/fastqs
 
 reference=$1
 threads=$2
@@ -34,14 +34,14 @@ cat ${prefx}*_2.fq.gz > ${prefx}.R2.fastq.gz
 $fastp --in1 ${prefx}.R1.fastq.gz --in2 ${prefx}.R2.fastq.gz --out1 ${prefx}.R1.unmerged.fastq.gz --out2 ${prefx}.R2.unmerged.fastq.gz  --merge --merged_out ${prefx}.collapsed.gz
 
 # 2. Map merged (collapsed) reads to Reference Genome and calculate Endougenous DNA
-bwa mem -t $threads -R "@RG\tID:$prefx\tSM:$prefx" $reference ${pathtobams}/${prefx}_R1.fastq.gz ${pathtobams}/${prefx}_R2.fastq.gz | samtools view -@ $threads -Sbh - >  /ohta/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.uns.bam
+bwa mem -t $threads -R "@RG\tID:$prefx\tSM:$prefx" $reference ${pathtobams}/${prefx}_R1.fastq.gz ${pathtobams}/${prefx}_R2.fastq.gz | samtools view -@ $threads -Sbh - >  /ohta2/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.uns.bam
 
 #cd $path/bams
 
 total=$(samtools view -@ $threads -c $prefx.full.uns.bam)
 echo -e "TotalReads\n$total" >> $prefx.log
 
-sambamba sort -m 15GB --tmpdir $path/bams/tmp -t $threads -o /ohta/julia.kreiner/waterhemp/herbarium/femaleref/$prefx.sorted.scaled.bam /ohta/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.scaled.bam
+sambamba sort -m 15GB --tmpdir $path/bams/tmp -t $threads -o /ohta2/julia.kreiner/waterhemp/herbarium/femaleref/$prefx.sorted.scaled.bam /ohta2/julia.kreiner/waterhemp/herbarium/femaleref/${prefx}.scaled.bam
 samtools merge ${prefx}.final.sorted.bam ${prefx}.unmerg.sorted.bam ${prefx}.merged.sorted.bam
 rm ${prefx}.uns.bam
 mapped=$(samtools view -@ $threads -c $prefx.bam)
@@ -61,8 +61,8 @@ mkdir {}; java -jar ~/software/DeDup/DeDup-0.12.6.jar -i /ohta2/julia.kreiner/he
 
 # 4. Remove non-marked file and generate index
 mv $prefix.dd.bam $prefix.bam
-samtools index /ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.dd.bam
-samtools flagstat /ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.dd.bam > /ohta/julia.kreiner/waterhemp/herbarium/maleref_mapped/${prefx}.stats
+samtools index /ohta2/julia.kreiner/herbarium/femaleref/bams/${prefx}.dd.bam
+samtools flagstat /ohta2/julia.kreiner/herbarium/femaleref/bams/${prefx}.dd.bam > /ohta2/julia.kreiner/herbarium/femaleref/bams/${prefx}.stats
 
-java -jar $picard ValidateSamFile I=/ohta/julia.kreiner/waterhemp/herbarium/bams/${prefx}.final.sorted_rmdup.bam MODE=SUMMARY O=/ohta/julia.kreiner/waterhemp/herbarium/bams/${prefx}.check
+java -jar $picard ValidateSamFile I=/ohta2/julia.kreiner/herbarium/femaleref/bams/${prefx}.final.sorted_rmdup.bam MODE=SUMMARY O=/ohta2/julia.kreiner/herbarium/femaleref/bams/${prefx}.check
 #
