@@ -8,4 +8,5 @@ Scripts for analyzying temporal sequence data & signals of contemporary evolutio
 4) [Analyses related to the frequency of herbicide resistance](https://github.com/jkreinz/TemporalAdaptation/blob/main/ResistanceFreqs_Fst_andPlottingFig1D.R)
 5) [Plotting samples on a map with multiple legends](MapPlotting_Figure1.R)
 6) [Alignmnent and SNPcalling commands](https://github.com/jkreinz/TemporalAdaptation/tree/main/Alignment_SNPcalling)
+7) [Running SLIMulations of selection estimation given spatio-temporal sampling](https://github.com/jkreinz/TemporalAdaptation/tree/main/SLIMulations)
 
