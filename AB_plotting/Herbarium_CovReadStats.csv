@@ -1,0 +1,115 @@
+Sample,Herbarium,Collection Year,State,County,Locality,Description,Nat/Ag/Dist,Male/Female,Lat,Long,Catalog #,FinalCov,FragLength
+HB0900,INHS,1876,Illinois,Oquawka,NA,Banks of the Mississippi,Nat,Female,40.900098,-90.991298,1,13.3905,78
+HB0901,INHS,1870,Illinois,Kankakee,NA,Wet Banks,Nat,Male,41.154318,-87.919365,2,13.7353,86
+HB0902,INHS,1875,Illinois,Oquawka,NA,Banks of the Mississippi,Nat,Male,40.900098,-90.991298,3,13.0334,80
+HB0903,INHS,1897,Illinois,Warrenvlle,NA,Mudflats,Nat,Female,41.823199,-88.174393,6,11.1796,110
+HB0904,INHS,1892,Illinois,Chicago,NA,"Waste Ground (""Exposition Building"")",Dist,Female,41.779452,-87.61641,7 (429),11.0828,83
+HB0907,INHS,1897,Illinois,Chicago,NA,"Dumping ground, Brighton Park",Dist,Male,41.818787,-87.706608,10,11.3536,71
+HB0908,INHS,1952,Illinois,"Fithian, Vermilion County",Vermilion County,Along railroad,Dist,Male,40.114645,-87.875056,11 (56279),11.9594,78
+HB0909,INHS,1946,Illinois,"Gardenplain, Whiteside County",Whiteside County,"Peat soil in potato fied, ""L.C. Anderson Farm""",Ag,Female,41.782572,-90.138152,12 (19934),14.3739,99
+HB0910,INHS,1948,Illinois,"W of Antioch, Lake County",Lake County,Disturbed soil,Dist,Male,42.481444,-88.157622,13 (32479),13.6151,85
+HB0911,INHS,1947,Illinois,"W of Gillespie, Macoupin County",Macoupin County,Corn field,Ag,Female,39.127901,-89.860508,14 (22536),11.8957,98
+HB0912,INHS,2005,Illinois,"Minooka Rd & Route I-80, Minooka",Minooka,Disturbed moist cropland margin near sable creek,Ag,Male,41.457917,-88.308444,15 (242814),17.5327,129
+HB0913,INHS,2000,Illinois,"Cooperstown, Brown County",Brown County,"Former marsh in partly filled obow, mostly used as corn fields",Ag,Male,39.959059,-90.611708,16 (205271),15.7711,128
+HB0914,MBDH,1895,Ohio,Fulton Co.,Fayette,Cornfield along the new river improvement on the prairie,Ag,Male,41.67333333,-84.32694444,357,13.7539,85
+HB0915,MBDH,1903,Ontario,Essex Co.,Little Chicken Island,NA,NA,NA,41.772246,-82.79184,265,9.26408,61
+HB0916,MBDH,1955,Ohio,Greene Co.,Fairborn,Front lawn of Canups house,Dist,Female,39.82083333,-84.01944444,292,16.4581,103
+HB0917,MBDH,1956,Ohio,Mercer Co.,Union Twp.,"Roadside, edge of soybean field",Ag,Female,40.67861111,-84.51861111,197,14.1186,90
+HB0918,MBDH,1991,Ohio,Putnam Co.,Greensburg Twp.,Weedy ground along side Blanchard river,Nat,Male,41.03944444,-84.15694444,253,16.8414,119
+HB0919,IUH,1898,Indiana,Lake,Miller's,on ballast (railroad bed),Dist,Female,41.602259,-87.25837,IND-0088703,10.6275,62
+HB0920,IUH,1941,Indiana,Vanderburgh,north of river slough,cultivated ground,Ag,Female,37.870283,-87.634147,IND-0088729,5.59576,60
+HB0921,IUH,1941,Indiana,Vanderburgh,Evansville,field north of river slough,Ag,,37.979365,-87.544518,IND-0088730,9.66192,57
+HB0922,IUH,1952,Indiana,Johnson,Just east of Franklin,Low cornfield,Ag,Male,39.482726,-86.019624,IND-0088699,11.1133,71
+HB0923,IUH,2007,Indiana,Vigo,"Terre Haute, west of Sidenbender Road, north of Highway 70, south of Margaret Avenue (Sample Unit 88)",Mesic loam plain fallow cropland with successional weeds,Ag,Female,39.43257,-87.380135,IND-0088738,12.602,100
+HB0924,KUMH,1897,Missouri,"Jackson, Courtney",NA,Common along river,Nat,Male,39.15556,-94.39333,176647,15.9277,103
+HB0925,KUMH,1913,Kansas,"Doniphan,",NA,Mesophytic oat field.,Ag,Male,39.813187,-95.160615,43812,11.7993,81
+HB0926,KUMH,1913,Kansas,"Doniphan,",NA,Mesophytic oat field.,Ag,Male,39.813187,-95.160615,43965,10.9873,76
+HB0927,KUMH,1949,Kansas,"Shawnee, Lake Shawnee",NA,Dry grassland.,Nat,Male,39.000784,-95.626093,43811,11.1542,75
+HB0928,KUMH,1940,Kansas,"Douglas, Lawrence",2 mi SE,Field.,Ag,Male,38.9365,-95.22391,44000,11.0733,69
+HB0929,KUMH,1970,Kansas,"Chautauqua, Peru","1 mi N, 1 mi E","Low, cultivated field. Gumbo soil.",Ag,Female,37.09524,-96.07752,43956,11.0716,74
+HB0930,KUMH,1973,Kansas,"Allen, Elsmore",1 mi W,"Roadside right of way along field. Weedy, good soil.",Ag,Female,37.79382,-95.16832,43987,10.4253,77
+HB0931,KUMH,1981,Kansas,"Doniphan, Denton","2 mi S, 2 mi W",Edge of cultivated field.,Ag,Female,39.70289,-95.30739,43933,11.3035,76
+HB0932,KUMH,1994,Kansas,"Labette, Parsons","3 mi S, 1 mi E; Kansas Army Ammunition Plant",Disturbed roadside along bean field and adjacent woodlands to the S. (scattered pop in field),Ag,Male,37.29416,-95.210223,111589,12.4656,86
+HB0933,ROM,1891,Ontario,NA,By Brighamin Creek at the Bridge,Leading to the H null Cemetary,Dist,Female,43.892294,-81.312444,447,11.8209,74
+HB0934,ROM,1889,Ontario,Wingham,NA,Alluvial soil (wet soil),Nat,"1 Female, 1 Male",43.89161,-81.312795,189975,11.7934,72
+HB0935,ROM,1880,Ontario,London,NA,Fields,Ag,Female,42.954827,-81.234897,188334,12.7187,80
+HB0936,ROM,1891,Ontario,Leasselman,NA,Alluvrium along the Nation River,Nat,"2 Females, 1 Male",45.319337,-75.093578,438,15.9289,83
+HB0937,ROM,1880,Ontario,"North Branch, London",NA,Low River Flats,Nat,"1 Male, 1 Female",43.04267,-81.175264,441,14.7824,85
+HB0938,ROM,1940,Ontario,"New Durham, Brant Co",NA,Edge of Field,Ag,Male,43.04956,-80.523938,129548,12.3943,80
+HB0939,ROM,1960,Ontario,"Dunnville, Haldimand Co",NA,Wasteground by Lake Erie,Dist,Female,42.86879,-79.617923,159479,13.9888,86
+HB0940,ROM,1950,Ontario,Kent Co,NA,Wet sand at Rankin creek near Mitchell Bay,Nat,Female,42.48877,-82.413605,80.118,13.2746,82
+HB0941,ROM,1960,Ontario,"Grenville Co, ON",W of Spencerville,Muddy shore of South Nation River,Nat,"1 Female, 5 Males",44.828922,-75.554629,134207,12.2172,77
+HB0942,ROM,1986,Ontario,Walpole Island,NA,Disturbed forest/tall grass prairie - swampy,Nat,Female,42.568369,-82.504545,TRT00029148,2.27353,90
+HB0943,ROM,1991,Ontario,"Louth Twp., Niagara RM",Between QEW & railway tracks,W Shoreline of Jordan Marsh,Nat,Female,43.174444,-79.375015,246184,12.1441,81
+HB0944,ROM,1985,Ontario,Ottawa-Carleton,"Huntley Tw, THE BURNT LANDS",Silty wet sand in dried-up pond in old pasture,Dist,Female,45.274525,-76.088545,234833,11.2151,86
+HB0945,ROM,1988,Ontario,Wasaga Beach,Nottawasaga R. at Jack L.,,Nat,Female,44.485637,-79.99545,240977,13.7394,88
+HB0947,ROM,1997,Ontario,"Brighton Tw., Northumberland Co",Presqu'ile provincial park,"Sand pile, N shore of Lake Ontario",Nat,Male,43.997787,-77.729332,256250,8.5743,75
+HB0948,ROM,1990,Ontario,Wingham,NA,Riverbanks,Nat,Male,43.89161,-81.312795,27813,13.8248,76
+HB0949,ROM,1880,Ontario,N.B. London,NA,River flat,Nat,Male,43.083152,-81.166767,85.246,7.79696,80
+HB0950,UMH,2001,Michigan,Lenawee Co,Medina Twp,"Open roadside at edge of cornfield, S side of Lime Creek Rd, w of Rogers Hwy",Ag,Male,41.766065,-84.227971,1209687,3.25552,76
+HB0951,UMH,1909,Michigan,near Port Huron,near Cafoe,"Invading cultivated fields as a weed, abundant",Ag,Female,42.979577,-82.470627,1209704,1.91204,79
+HB0952,UMH,1897,Illinois,Warrenville,NA,Mud flats,Nat,Female,41.829751,-88.177826,1559076,2.06287,75
+HB0953,UMH,1883,Ohio,Cincinnati,NA,,NA,Male,39.136053,-84.502294,1207957,5.66755,85
+HB0954,UMH,1833,Ohio,"North Bend, Cincinnati",NA,Sandy beach of Ohio River,Nat,,39.14757,-84.753428,1207929,4.90319,84
+HB0955,UMH,1932,Ontario,"Little Current, Manitoulin Island",NA,In open fields,Ag,Female,45.966667,-81.933333,1208039,3.52385,89
+HB0956,UMH,1986,Ontario,"Essex Co, Malden Twp","UTM 298555, map 40J/3. squre 17LS25",Big creek marsh,Nat,Female,42.05088,-83.056715,1208029,3.24029,88
+HB0957,UMH,1946,Illinois,Sangamon Co,Auburn,Woods,Nat,Male,39.578464,-89.730027,1208025,2.77977,75
+HB0958,UMH,1989,Ontario,"N Plantagent Ip, Jessup's Falls (South Nation PP), Hwy 17 @ S Nation R","31G/11, 18VF94",Rockshore protection and waste ground along river,Dist,?,45.559302,-75.064719,1207959,3.36269,76
+HB0959,UMH,1882,Illinois,Riverside,NA,"Gravelly, dry bed of Desplaine River",Nat,Female,41.826723,-87.82569,1559075,4.44693,82
+HB0960,MOB,1919,Illinois,Pope,Golconda,Muddy banks of Ohio River,Nat,Female,37.364829,-88.482798,853159,5.05156,79
+HB0961,UMH,1949,Illinois,Champaign Co,5 Miles southeast of St. Joseph,Mud and sand at bottom of a ditch,Dist,Male,40.061911,-88.105443,1559082,4.65192,77
+HB0962,UMH,1993,Ontario,"Middlesex Co, Lobo Twp,",2.3 km S of Komoka Post office,"Komoka Creek Swamp near Thames River, Edge of Thames",Nat,Female,42.917996,-81.441417,1207956,5.43341,79
+HB0963,UMH,1995,Ontario,"Niagara Regional Municipatlity, Niagara Falls Twp",Montrose Railway Yard,Moist disturbed ground near railway tracks,Dist,Female,43.06736,-79.084574,1208030,3.78925,79
+HB0964,MOB,1877,Illinois,Saint Clair,Cahkokia,Low places,Nat,Female,38.55,-89.916667,1740835,3.18315,90
+HB0965,MOB,1889,Missouri,St. Louis City,NA,,NA,both?,38.62975,-90.242434,1740859,3.68745,67
+HB0966,MOB,1893,Illinois,Saint Clair,east carondelet,Low places,Nat,Female,38.509011,-90.177817,1740847,4.18845,77
+HB0967,MOB,1897,Illinois,Warrenville,NA,Mudflats *note: same pop/date/collector as #93,Nat,Female,41.829751,-88.177826,38973,2.8113,69
+HB0968,MOB,1902,Illinois,Saint Clair,East St Louis,Wet plains in East St Louis,Nat,Female,38.625,-90.16,1740833,4.70118,82
+HB0969,MOB,1912,Missouri,St. Louis City,Mo Bot G,In open field,Ag,Female,38.603097,-90.257021,778075,3.10916,84
+HB0970,MOB,1925,Illinois,Lake,Long Lake,"Wet open ground, borders of tamarack swamp",Nat,Female,42.370872,-88.121862,940825,5.5468,78
+HB0971,MOB,1927,Missouri,St. Louis,St Albans,Mo River Sand Bar,Nat,Male,38.595548,-90.767735,2157288,3.17409,54
+HB0972,MOB,1927,Illinois,St. Clair,NA,"In moist ground near Sugar Loaf Station, about 2 miles south of Du Po",Dist,Male,38.495758,-90.217877,1026850,9.35292,59
+HB0973,MOB,1930,Missouri,St. Louis,Creve coeur Lake,Sandy fields,Ag,Male,38.715451,-90.48898,2157285,11.206,62
+HB0974,MOB,1933,Missouri,St. Louis,NA,"Alluvial banks along mississippi river, 6500 South St. Louis",Nat,Male,38.572701,-90.229642,1140474,9.02591,63
+HB0975,MOB,1940,Illinois,Champaign,NA,"Moist thicket along sangamon River, 15 muiles west of Urbana",Nat,Male,40.119754,-88.498602,1579795,9.79223,68
+HB0976,MOB,1962,Illinois,Tazwell,4 miles North of East Peoria,Low River Bank,Nat,Female,40.720818,-89.597212,1812554,9.56557,69
+HB0977,MOB,1967,Ohio,Lucas,Maumee,Bottom of Maumee River at SW corner of Maumee city Limits,Nat,Male,41.542549,-83.689433,6773122,8.90676,70
+HB0978,MOB,2005,Illinois,Madison,"3mi NE of Highland, at NE of Highland-Winet airport",Weedy mowed and cultivated fields and bulldozed areas,Ag,Female,38.779167,-89.640556,6113965,9.10315,78
+HB0979,MOB,2009,Missouri,St. Charles,NA,"Howell Island Conservation area, huge population, in large field next to hiking trail",Nat,Female,38.665567,-90.70705,6449615,7.68776,90
+HB0980,MOB,2009,Illinois,Hancock,Dallas city,"Dallas city public fishing access on the bank of the Mississippi River, and nearby railway trakcs",Nat,both?,40.634567,-91.179467,6443667,6.80033,84
+HB0981,MOB,2010,Missouri,Montgomery,NA,Loutre River,Nat,Male,38.911389,-91.592778,6334467,4.10262,78
+HB0982,MOB,2011,Illinois,Randolph,"E of Kaskasia, between the main levee and the river",Roadside through flooplain with deep alluvial sandy loam,Dist,Female,37.923333,-89.893333,6341594,8.96168,74
+HB0983,MOB,1919,Missouri,Jasper,NA,A common weed in low and cultivated ground,Ag,Male,37.204167,-94.344167,6773126,7.78303,58
+HB0984,AAFC,1892,Ontario,Ottawa,(William Scott),,NA,Male,45.289379,-75.737232,1001151662,9.86069,63
+HB0985,AAFC,1955,Ontario,"Richmond, Carleton",NA,"3 miles East, Wet Roadside",Dist,Female,45.19477,-75.78076,1151663,3.57686,74
+HB0986,AAFC,1954,Ontario,Rockcliffe Park,NA,"Shoreline of Ottawa River, moist sandy gravely soil",Nat,Male,45.457179,-75.676253,1151664,11.521,77
+HB0987,AAFC,1921,Ontario,Ottawa,NA,Lac Constane,Nat,Male,47.387012,-77.283366,1151665,6.48056,75
+HB0988,AAFC,1951,Ontario,Haldiman County,Seneca Twp,"1 mile N of York, Sand beach",Nat,Male,43.035303,-79.897787,1151667,8.0638,74
+HB0989,AAFC,1988,Ontario,Essex County,Point Pelee National Park,"East beach, moist sand beach",Nat,Female,41.93464,-82.505179,1151668,9.77746,79
+HB0990,AAFC,1998,Ontario,Essex County,"Middle Island, Lake Erie","North shore or W End, Moist woods",Nat,Male,41.683999,-82.682764,1151669,12.3878,82
+HB0991,AAFC,1964,Ontario,Glengary County,Charletton Twp.,Dried bed of the Raisin River at rapids,Nat,Female,45.13414,-74.575361,1151671,10.2771,79
+HB0992,AAFC,1949,Ontario,Lanarck,"Drummond Twp., Concession IX","Along sandy beach, Between Mississippi River & McEwan Nay.",Nat,Female,45.046655,-76.230997,1151672,13.3321,82
+HB0993,AAFC,1960,Ontario,Sarnia,Lambton County,"High grass along tracks, Railyards north of the station",Dist,Male,42.957915,-82.393943,1151673,9.15642,69
+HB0994,AAFC,1937,Ontario,Ottawa,NA,"Shore line, Moira Lake",Nat,Male,44.486839,-77.458612,1151674,10.6751,73
+HB0995,AAFC,1960,Ontario,Grenville County,W of Spencerville,Muddy exundated shore of South Nation River,Nat,,44.951292,-75.483802,1151675,9.41116,79
+HB0997,AAFC,1988,Ontario,Hald-Norfolk County,"Rocky Point Prov. Park, Dunville Twp.",,Nat,Female,42.847407,-79.555433,1154001,10.7483,86
+HB0998,AAFC,1958,Ontario,Stormont County,Farran Point,Railway tracks,Dist,Male,44.988422,-74.996022,1151676,8.92551,77
+HB0999,AAFC,1938,Ontario,Pelee Island,NA,NA,Nat,Male,41.683999,-82.682764,1154003,10.7606,68
+HB1000,AAFC,1934,Ontario,Mitchell's Bay,NA,Waste places,Dist,Female,42.468738,-82.407807,1154004,10.9658,72
+HB1001,AAFC,1939,Ontario,Waterloo County,Conx IX Lot 12 below Gault,Edge of 1st Island below Gault,Nat,Male,43.352835,-80.316045,1154005,12.6861,77
+HB1002,AAFC,1918,Ontario,NA,St Thomas,NA,NA,Female,42.77177,-81.197887,1154008,10.1043,73
+HB1003,AAFC,1961,Ontario,Waterloo County,1.5mile N of Heapeler,Wet Field beside Speed River,Ag,Female,43.455939,-80.290772,1154009,11.2391,73
+HB1004,AAFC,1828,Ontario,Middlesex County,Near London,Thames River,Nat,,42.959472,-81.309866,1154010,10.6852,71
+HB1005,AAFC,1828,Ontario,Middlesex County,West of London,Bank of the Thames,Nat,Male,42.980389,-81.344198,1154011,11.5925,73
+HB1006,AAFC,1961,Ontario,Waterloo County,1.5mile N of Heapeler,Wet Field beside Speed River,Ag,Male,43.455939,-80.290772,1154012,9.17067,80
+HB1007,AAFC,1966,Ontario,Middlesex County,"Junction of Oxebow creek & Hyde Park rd., NNW of London",Muddy soil along side creek,Nat,Female,43.030996,-81.349254,1154014,10.1624,76
+HB1008,AAFC,1828,Ontario,Middlesex County,"Komokam, Lobo Township",NA,NA,Male,42.950068,-81.435938,1154013,11,67
+HB1009,AAFC,1903,Ontario,NA,"Brigham's creek, H null",In boggy soil,Nat,Female,43.892294,-81.312444,1151660,10.3857,71
+HB1010,INHS,1906,Illinois,Riverdale,NA,Along railroad,Dist,Male,41.640523,-87.626446,8 (2632),9.87362,70
+HB1011,INHS,1894,Ilinois,Wheaton,NA,Roadside,Dist,Male,41.864251,-88.103346,9 (267),10.2368,72
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,AAFC,1985,Ontario,Ottawa-Carleton,"Huntley Tw, THE BURNT LANDS",Silty wet sand in dried-up pond in old pasture,Dist,Female,45.274525,-76.088545,,,
+,AAFC,1989,Ontario,"N Plantagent Ip, Jessup's Falls (South Nation PP), Hwy 17 @ S Nation R","31G/11, 18VF94",Rockshore protection and waste ground along river,Dist,?,45.559302,-75.064719,,,
