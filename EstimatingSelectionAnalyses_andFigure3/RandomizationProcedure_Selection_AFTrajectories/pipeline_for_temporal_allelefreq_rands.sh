@@ -100,7 +100,7 @@ done < bins_agAFs_n154_vec.txt
 #transpose 012
 cat bins_agAFs_n154_vec.txt | parallel -j 20 "bash transposeraw_ag.sh {}"
 
-#flip 0 and 2's for AFs > 0.5
+#flip 0 and 2's for AFs > 0.5 (since want to count the number of reference alleles, not alternate)
 while read freq
 do
 cat AF_perms/ag_analysis_redo/cg_${freq}.012 | sed 's/ 2/ 3/g' | sed 's/ 0/ 2/g' | sed 's/ 3/ 0/g' > AF_perms/ag_analysis_redo/cg_${freq}_f.012
