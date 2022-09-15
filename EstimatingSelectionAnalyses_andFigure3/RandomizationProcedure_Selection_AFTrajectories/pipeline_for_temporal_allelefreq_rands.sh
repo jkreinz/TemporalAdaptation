@@ -42,9 +42,6 @@ n
 ##############
 #step 2
 ##############
-#remove header
-tail -n+2 bins_agAFs_n154.txt > bins_agAFs_n154_vec.txt
-
 #for generating a set of random loci to estimate AF change over, we first need to make sure they are present in both herbarium and contemporary data
 #first copy herb/historical files over
 cp /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.fam .
@@ -74,15 +71,16 @@ awk '{$3 = sprintf("%.2f",$3)} {print $1 "\t" $2 "\t" $3}' CG_ag.frq.constrained
 awk '{$3 = sprintf("%.2f",$3)} {print $1 "\t" $2 "\t" $3}' CG_ag.frq.constrained.flipped | tail -n+2 > AF_perms/ag_analysis_redo/CG_ag.frq.constrained.flipped.binned
 
 #produce seperate files for each binned AF (for ease later)
+#remove header
+tail -n+2 bins_agAFs_n154.txt > bins_agAFs_n154_vec.txt
 while read freq
 do
 grep -F $freq AF_perms/ag_analysis_redo/CG_ag.frq.constrained.binned > AF_perms/ag_analysis_redo/${freq}_loci.txt
 done < bins_agAFs_n154_vec.txt
 
-#again for SNPS with freq > 0.5
+#again for SNPS with freq > 0.5 (in which case track reference allele)
 sort bins_agAFs_n154_vec.txt | awk '$1 > .49' > bins_agAFs_n154_vec_uppers.txt
 awk '$3 = sprintf("%.2f",1-$3) {print $1 "\t" $2 "\t" $3}' AF_perms/ag_analysis_redo/CG_ag.frq.constrained.flipped.binned > AF_perms/ag_analysis_redo/CG_ag.frq.constrained.flipped.binned.f
-
 while read freq
 do
 grep -F $freq AF_perms/ag_analysis_redo/CG_ag.frq.constrained.flipped.binned.f > AF_perms/ag_analysis_redo/${freq}_loci.txt
