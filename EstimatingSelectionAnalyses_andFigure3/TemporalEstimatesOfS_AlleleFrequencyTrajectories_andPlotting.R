@@ -1,6 +1,8 @@
+#Estimate trajectory of allele frequencies from genotype data and infer selection, via logistic regression approach
+
 #import genotypes for focal alleles in herbarium samples
 library(data.table)
-herb_012<-fread("~/herb_cmh_FDR10p_clumped_matched_refalt_flipped_final.012",na.strings = "-1")
+herb_012<-fread("~/herb_cmh_FDR10p_clumped_matched_refalt_flipped_final.012",na.strings = "-1") #output with plink
 names(herb_012)<-paste("snp",seq(1:154),sep = "_")
 herb_012<-herb_012/2 #rescale genotypes to allele frequencies i.e. 0,1,2, to 0,0.5,1
 inds<-fread("~/herb_cmh_FDR10p_clumped_matched_refalt_matched.012.indv",header = F)
@@ -14,7 +16,7 @@ inds<-fread("~/CMH_clumped_outliers_cg_toflip.012.indv",header = F)
 contemp_012$sample<-as.character(inds$V1)
 
 #import sample metadata
-info<-read.table("~/3waymerged_sampleinfo.txt",sep="\t",header = T)
+info<-read.table("~/3waymerged_sampleinfo.txt",sep="\t",header = T) #year and env info
 head(info)
 
 #merge files
@@ -44,7 +46,7 @@ nat<-herb_contemp_meta %>% filter(env!="") %>% filter(env=="Nat") %>% filter(yea
 nrow(nat %>% filter(year < 2018))
 nrow(ag %>% filter(year < 2018))
 
-#initialize
+#initialize variables for collecting output of logistic regression over all alleles (n=154)
 pval<-list()
 zval<-list()
 slope<-list()
@@ -60,18 +62,18 @@ for (i in 1:154) {
   lm1<-glm(data=test, unlist(test[,1]) ~ year, family="binomial") #regress genotypes on year to get predicted allele frequency and estimate of selection
   test<-as.data.frame(summary(lm1)$coefficients)
   
-  pval[[i]]<-test$`Pr(>|z|)`[2]
+  pval[[i]]<-test$`Pr(>|z|)`[2] #significance of selection
   zval[[i]]<-test$`z value`[2]
-  slope[[i]]<-test$Estimate[2]
-  slope_error[[i]]<-test$`Std. Error`[2]
+  slope[[i]]<-test$Estimate[2] #selection (haploid currently, multiply by 2 for diploid assuming additivity)
+  slope_error[[i]]<-test$`Std. Error`[2] #selection SE
   
   probabilities <- lm1 %>% predict(newdata, type = "response")
-  afmin[[i]]<-probabilities[1]
-  afmax[[i]]<-probabilities[2]
+  afmin[[i]]<-probabilities[1] #predicted AF at start of time series
+  afmax[[i]]<-probabilities[2] #predicted AF at end of time series
   
 }
 
-#agricultural results
+#merge each vector output into dataframe of results
 results_ag<-data.frame(pval=unlist(pval),zval=unlist(zval),slope=unlist(slope),slope_error=unlist(slope_error),afmin=unlist(afmin),afmax=unlist(afmax))
 results_ag$variable<-paste("snp",seq(1:154),sep = "_")
 
@@ -106,6 +108,7 @@ results_nat$variable<-paste("snp",seq(1:154),sep = "_")
 pos<-results_nat[results_nat$slope > 0,]
 mean(results_nat$afmax-results_nat$afmin)
 
+#working with long format here
 long_nat<-long_012 %>% filter(env=="Nat")
 long_012_nat<-inner_join(long_nat,results_nat,by="variable")
 long_012_nat$pos<-long_012_nat$slope>0
