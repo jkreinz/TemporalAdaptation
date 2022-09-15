@@ -106,7 +106,7 @@ do
 cat AF_perms/ag_analysis_redo/cg_${freq}.012 | sed 's/ 2/ 3/g' | sed 's/ 0/ 2/g' | sed 's/ 3/ 0/g' > AF_perms/ag_analysis_redo/cg_${freq}_f.012
 done < bins_agAFs_n154_vec_uppers.txt
 
-#cut snpnames for lower AFs
+#cut snpnames for lower AFs (i.e. alternate ag alleles) - we'll use this below to track alleles from each ref or alt set
 awk '$1 < 0.51' bins_agAFs_n154_vec.txt > bins_agAFs_n154_vec_lowers.txt
 while read freq
 do
@@ -130,7 +130,7 @@ seq 1 1000 | parallel -j 20 "bash resample_ag.sh {}" #keep track of whether an a
 #for each 1000 randomiziations...
 for itt in {1..1000}
 do
-#0.48 is highest freq of alt (ag) allele in ag environments
+#0.48 is highest freq of alt (ag) allele in ag environments 
 grep -F "0.48" -B100 AF_perms/ag_analysis_redo/resamples/cg_${itt}_out.txt | awk '{print $1 "\t" $2}' | sed -e 's/[0-9]*\.[0-9]*\t//g' | awk '{print $1}' | sed 's/..$//'  > AF_perms/ag_analysis_redo/resamples/lower_matches_${itt}.txt
 #0.52 is lowest freq of alt (ref) allele in ag environments
 grep -F "0.52" -A100 AF_perms/ag_analysis_redo/resamples/cg_${itt}_out.txt | awk '{print $1 "\t" $2}' | sed -e 's/[0-9]*\.[0-9]*\t//g' | awk '{print $1}' | sed 's/..$//' > AF_perms/ag_analysis_redo/resamples/upper_matches_${itt}.txt
