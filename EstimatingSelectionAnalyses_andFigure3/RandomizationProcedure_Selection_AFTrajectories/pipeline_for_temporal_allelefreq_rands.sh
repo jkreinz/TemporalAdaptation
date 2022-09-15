@@ -16,12 +16,17 @@
 awk '{print $2}' ../../byenv_analysis/ag.fam > ag.inds
 
 #get freqs for focal sites (n=154) within those individuals (here agricultural inds)
-vcftools --vcf CMH_clumped_outliers_cg.vcf --freq --out ag_herbmatched --keep ag_cg.samps --positions herb_cmh_FDR10p_clumped_matched_refalt.pos
+vcftools --vcf CMH_clumped_outliers_cg.vcf --freq --out ag_herbmatched --keep ag.inds --positions herb_cmh_FDR10p_clumped_matched_refalt.pos
 
 #get frequency of observed focal alleles in ag by subsetting (taking ref or alt based on which is more common in ag)
-cat <(grep -Ff <(cut -f1 allelestoflip_clump_agassoc.txt | cut -d"[" -f1 | tr ":" "\t") ag_herbmatched.frq | awk '{print $1 "\t" $2 "\t" $5}' | tr ":" "\t" ) <(grep -vFf <(cut -f1 allelestoflip_clump_agassoc.txt | cut -d"[" -f1 | tr ":" "\t") ag_herbmatched.frq | awk '{print $1 "\t" $2 "\t" $6}' | tr ":" "\t")  | grep -v "CHROM" > ag_herbmatched_flipped.frq
+plink2 --bfile CMH_clumped_outliers_cg --freq --keep nat.fam --nonfounders --out nat_clump_outliers --allow-extra-chr #get allele frequency at all sites in nat
+plink2 --bfile CMH_clumped_outliers_cg --freq --keep ag.fam --nonfounders --out ag_clump_outliers --allow-extra-chr #get allele frequency at all sites in nat
+paste <( cut -f2-5 ag_clump_outliers.afreq) <(cut -f3-5 nat_clump_outliers.afreq) > ag_nat_cmh_clump_freqs.txt
+#check which top CMH outlier sites have higher freq in nat compared to ag
+awk '$4 < $7' ag_nat_cmh_clump_freqs.txt > allelestoflip_clump_agassoc.txt #ones where reference is the ag allele
 
-cp ag_herbmatched_flipped.frq ag_freq_contemporary_n154.frq
+cat <(grep -Ff <(cut -f1 allelestoflip_clump_agassoc.txt | cut -d"[" -f1 | tr ":" "\t") ag_herbmatched.frq | awk '{print $1 "\t" $2 "\t" $5}' | tr ":" "\t" ) <(grep -vFf <(cut -f1 allelestoflip_clump_agassoc.txt | cut -d"[" -f1 | tr ":" "\t") ag_herbmatched.frq | awk '{print $1 "\t" $2 "\t" $6}' | tr ":" "\t")  | grep -v "CHROM" > ag_freq_contemporary_n154.frq
+
 
 #bin agricultural allele frequencies in agricultural environments (round to the nearest 100th) for matching with permuted set
 R
@@ -40,13 +45,14 @@ n
 #remove header
 tail -n+2 bins_agAFs_n154.txt > bins_agAFs_n154_vec.txt
 
-#copy herb/historical files over
+#for generating a set of random loci to estimate AF change over, we first need to make sure they are present in both herbarium and contemporary data
+#first copy herb/historical files over
 cp /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.fam .
 cp /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.bim .
 cp /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.bed .
 
 #fix snp names to match contemporary set (plink based naming)
-awk 'split($2,a,"_") {print $1 "\t" a[1]"_"a[2]":"a[3]"[b37]"$5","$6 "\t" 0 "\t" $4 "\t"$5 "\t" $6}' /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.bim > allchroms_herblastrerun_QUALDP_biSNP_mod.bim
+awk 'split($2,a,"_") {print $1 "\t" a[1]"_"a[2]"[b37]"$5","$6 "\t" 0 "\t" $4 "\t"$5 "\t" $6}' /ohta2/julia.kreiner/herbarium/femaleref/redupped_rescaled/regional_vcfs/bychrom/allchroms_herblastrerun_QUALDP_biSNP.bim > allchroms_herblastrerun_QUALDP_biSNP_mod.bim
 mv allchroms_herblastrerun_QUALDP_biSNP.bed allchroms_herblastrerun_QUALDP_biSNP_mod.bed
 mv allchroms_herblastrerun_QUALDP_biSNP.fam  allchroms_herblastrerun_QUALDP_biSNP_mod.fam
 
@@ -60,10 +66,10 @@ plink --bfile ../commongarden_finalfilt --freq --keep ../../byenv_analysis/ag.fa
 plink --bfile ../commongarden_finalfilt --freq --keep ../../byenv_analysis/nat.fam --out AF_perms/ag_analysis_redo/CG_nat --allow-extra-chr --nonfounders --extract cg_herb_alleles_overlappingpos_ag.txt
 
 #constrain to sites where freq of alt greater in ag compared to nat, and for sites > 0.5, freq of ref greater in nat compared to ag (since ref would the be higher freq in ag > nat)
-paste AF_perms/ag_analysis_redo/CG_ag.frq AF_perms/ag_analysis_redo/CG_nat.frq | awk '$5 > $11 {print $1 "\t" $2 "\t" $5}' > CG_ag.frq.constrained
-paste AF_perms/ag_analysis_redo/CG_ag.frq AF_perms/ag_analysis_redo/CG_nat.frq | awk '$5< $11 {print $1 "\t" $2 "\t" $5}' > CG_ag.frq.constrained.flipped
+paste AF_perms/ag_analysis_redo/CG_ag.frq AF_perms/ag_analysis_redo/CG_nat.frq | awk '$5 > $11 {print $1 "\t" $2 "\t" $5}' > CG_ag.frq.constrained #alternate (genome-wide) ag alleles
+paste AF_perms/ag_analysis_redo/CG_ag.frq AF_perms/ag_analysis_redo/CG_nat.frq | awk '$5< $11 {print $1 "\t" $2 "\t" $5}' > CG_ag.frq.constrained.flipped #reference (genome-wide) ag alleles
 
-#round
+#round genome-wide frequencies in ag and nat to the nearest hundredth for matching
 awk '{$3 = sprintf("%.2f",$3)} {print $1 "\t" $2 "\t" $3}' CG_ag.frq.constrained | tail -n+2 > AF_perms/ag_analysis_redo/CG_ag.frq.constrained.binned
 awk '{$3 = sprintf("%.2f",$3)} {print $1 "\t" $2 "\t" $3}' CG_ag.frq.constrained.flipped | tail -n+2 > AF_perms/ag_analysis_redo/CG_ag.frq.constrained.flipped.binned
 
