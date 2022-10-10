@@ -5,7 +5,7 @@ Scripts for analyzying temporal sequence data & signals of contemporary evolutio
 1) [Estimating selection coefficients from temporal data and producing a null expectation based on starting allele freqs](https://github.com/jkreinz/TemporalAdaptation/tree/main/EstimatingSelectionAnalyses_andFigure3)
 2) [Analyzing patterns of fine-scale ancestry (across the genome) through time](https://github.com/jkreinz/TemporalAdaptation/tree/main/FinescaleAncestry_PlottingandLAMP) and [individual-level ancestry through time](https://github.com/jkreinz/TemporalAdaptation/tree/main/IndivPopStructure)
 3) [CMH and FST scans and downstream analyses](https://github.com/jkreinz/TemporalAdaptation/tree/main/CMHandFST_PlottingandAnalysis)
-4) [Analyses related to the frequency of herbicide resistance](https://github.com/jkreinz/TemporalAdaptation/blob/main/ResistanceFreqs_Fst_andPlottingFig1D.R)
+4) [Analyses related to the frequency of herbicide resistance](https://github.com/jkreinz/TemporalAdaptation/tree/main/ResistanceInvestigations)
 5) [Plotting samples on a map with multiple legends](MapPlotting_Figure1.R)
 6) [Alignmnent and SNPcalling commands](https://github.com/jkreinz/TemporalAdaptation/tree/main/Alignment_SNPcalling)
 7) [Running SLIMulations of selection estimation given spatio-temporal sampling](https://github.com/jkreinz/TemporalAdaptation/tree/main/SLIMulations)
