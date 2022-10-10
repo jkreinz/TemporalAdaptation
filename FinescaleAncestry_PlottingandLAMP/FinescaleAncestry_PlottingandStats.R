@@ -97,7 +97,7 @@ anc_recomb_dens<-inner_join(anc_recomb,gene_dens_bigger, by=c("scaf","win"))
 anc_recomb_dens <- anc_recomb_dens %>% filter(mean_recomb < 50) #remove outliers
 
 #import CMH
-cmh<-fread("~/ag_v_nat_withinpairs_maf01.cmh")
+cmh<-fread("~/ag_v_nat_withinpairs_maf01.cmh") #too large for github
 cmh_wind<- cmh %>% mutate(win=floor((BP)/100000)) %>%
   group_by(win, CHR) %>% 
   dplyr::summarise(mean_cmh=mean(P,na.rm = T), median_cmh=median(P,na.rm = T),cmh_n=n())
@@ -109,7 +109,7 @@ head(anc_recomb_dens)
 cmh_anc_recomb_dens<-inner_join(cmh_wind, anc_recomb_dens, by=c("scaf","win") )
 
 #import XPEHH
-xpehh2<-fread("XPEHH_nat_ag_allchroms.txt")
+xpehh2<-fread("XPEHH_nat_ag_allchroms.txt") #too large for github
 head(xpehh2)
 names(xpehh2)[c(1,2,10)]<-c("scaf","pos","xpehh")
 xpehh2$scaf<-as.numeric(xpehh2$scaf)
