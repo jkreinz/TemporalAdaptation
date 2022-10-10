@@ -82,19 +82,34 @@ ggplot(data=both_pop, aes(long,K1, group=time_span, color=time_span)) +
 ###########
 library(ggridges)
 both_pop$time_span<-as.factor(both_pop$time_span)
+both_pop<-both_pop %>% add_row(state = "Ontario", time_span = "")
+both_pop<-both_pop %>% add_row(state = "Ohio", time_span = "")
+both_pop<-both_pop %>% add_row(state = "Illinois", time_span = "")
+both_pop<-both_pop %>% add_row(state = "Missouri", time_span = "")
+both_pop<-both_pop %>% add_row(state = "Kansas", time_span = "")
+colscheme<- viridisLite::viridis(3,end=.9)
+both_pop$time_span <- factor(both_pop$time_span, levels = c("1920","1980", "2020", ""))
+both_pop$state <- factor(both_pop$state, levels = c("Kansas","Missouri","Illinois","Indiana","Michigan","Ohio","Ontario"))
+
+
 both_pop %>% filter(state != "Michigan") %>% filter(state != "Indiana" ) %>% 
   ggplot(aes(x = K1, y = interaction(time_span,state), fill=time_span)) +
   #stat_density_ridges(quantile_lines = TRUE, alpha=.7,show.legend = F,calc_ecdf = T) +
+  #facet_wrap(~state) +
   theme_bw() +
-  geom_point(color="grey40",alpha=.5) +
-  geom_density_ridges(quantile_lines = T, alpha=.7,from=0, to=1, show.legend = F,calc_ecdf = T) +
-  scale_fill_viridis_d(end =  .9) +
+  geom_point(alpha=.5,pch=21,size=2,color="black") +
+  #geom_jitter(color="grey40",alpha=.5, width = 0.00001, aes(fill=time_span)) +
+  #geom_boxplot(alpha=.6) +
+  geom_density_ridges(quantile_lines = T, alpha=.7,from=0, to=1, show.legend = F,
+                      calc_ecdf = T,scale=.9,rel_min_height = 0.05,quantiles=3) +
   xlab(substitute(paste("Proportion var. ",italic("rudis"), " ancestry"))) +
   labs(y="Time Span by State", fill="Time Span") +
   annotate("rect", xmin = 0, xmax = 0, ymin = -.25, ymax = 17,
-           alpha = 0,fill = "white") 
-# annotate("rect", xmin = 1, xmax = 1.5, ymin = -.5, ymax = 16,
-#         alpha = .8,fill = "white") 
+           alpha = 0,fill = "white") +
+  coord_flip() +
+  scale_fill_manual(values=c(colscheme,"white")) +
+  scale_color_manual(values=c(colscheme,"white")) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ##########
 #Figure 4C
